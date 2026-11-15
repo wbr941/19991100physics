@@ -1,0 +1,345 @@
+.conveyor-hero {
+  padding: clamp(70px, 9vw, 120px) 0 36px;
+}
+
+.conveyor-hero h1 {
+  max-width: 980px;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(60px, 8vw, 118px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.conveyor-intro {
+  max-width: 760px;
+  margin-top: 30px;
+  font-size: 16px;
+}
+
+.conveyor-workspace {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.36fr) minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: clamp(70px, 9vw, 110px);
+}
+
+.conveyor-controls,
+.conveyor-visual {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface);
+}
+
+.conveyor-controls {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: clamp(22px, 2.6vw, 34px);
+}
+
+.control-title {
+  color: var(--ink-soft);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.preset-grid button {
+  min-height: 42px;
+  padding: 0 12px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.preset-grid button:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.preset-grid button.is-active {
+  color: var(--accent);
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.parameter-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.control-group {
+  min-width: 0;
+}
+
+.control-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 13px;
+}
+
+.control-label label {
+  font-size: 13px;
+}
+
+.control-label output {
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.control-hint {
+  margin: 7px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.range-control {
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--accent-strong);
+  cursor: pointer;
+}
+
+.conveyor-controls .sim-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 34px;
+}
+
+.conveyor-controls .sim-buttons .button {
+  min-height: 48px;
+}
+
+.conveyor-visual {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: clamp(18px, 2.4vw, 30px);
+  background:
+    linear-gradient(rgba(20, 35, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 35, 40, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.sim-view-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.sim-state {
+  color: var(--orange);
+}
+
+.conveyor-canvas-wrap {
+  position: relative;
+  height: clamp(360px, 44vw, 560px);
+  flex: 0 0 auto;
+  margin: 8px 0 18px;
+}
+
+#conveyor-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.conveyor-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.conveyor-metrics div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 18px 16px;
+}
+
+.conveyor-metrics div:nth-child(n + 2) {
+  border-left: 1px solid var(--line);
+}
+
+.conveyor-metrics span {
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.conveyor-metrics strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: clamp(13px, 1.4vw, 18px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conveyor-conclusion {
+  display: flex;
+  gap: 9px;
+  margin: 18px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.conveyor-conclusion span {
+  color: var(--orange);
+}
+
+.conveyor-conclusion p {
+  margin: 0;
+}
+
+.principles-section {
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+
+.principles-section h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.principle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 52px;
+}
+
+.principle-card {
+  min-width: 0;
+  padding: 24px 22px 28px;
+  border-top: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+
+.principle-index {
+  color: var(--orange);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.principle-card h3 {
+  margin: 18px 0 12px;
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.principle-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+@media (max-width: 1100px) {
+  .conveyor-workspace {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .conveyor-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .conveyor-metrics div:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .conveyor-metrics div:nth-child(4) {
+    border-top: 1px solid var(--line);
+  }
+
+  .conveyor-metrics div:nth-child(n + 5) {
+    border-top: 1px solid var(--line);
+  }
+
+  .conveyor-metrics div:nth-child(even) {
+    border-left: 1px solid var(--line);
+  }
+
+  .principle-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .conveyor-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .conveyor-controls {
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .conveyor-visual {
+    border-radius: 0 0 24px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .conveyor-hero h1 {
+    font-size: clamp(50px, 15vw, 76px);
+  }
+
+  .preset-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .conveyor-canvas-wrap {
+    height: 360px;
+  }
+
+  .conveyor-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .conveyor-metrics div {
+    padding: 15px 10px;
+  }
+
+  .principle-grid {
+    grid-template-columns: 1fr;
+  }
+}

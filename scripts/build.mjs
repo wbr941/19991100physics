@@ -22,6 +22,7 @@ const entries = [
   "CNAME",
   ".nojekyll",
   "assets",
+  "labs",
 ];
 
 for (const entry of entries) {

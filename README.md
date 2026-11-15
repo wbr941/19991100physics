@@ -29,7 +29,11 @@ npm run preview
 ├── assets/
 │   ├── styles.css          # 视觉系统、布局和响应式样式
 │   ├── main.js             # 导航、主题和 Canvas 交互
+│   ├── conveyor.js         # 水平传送带模型的模拟与渲染
+│   ├── conveyor.css        # 传送带实验页样式
+│   └── home.css            # 首页专属样式
 │   └── og-cover.svg        # 社交分享封面
+├── labs/conveyor-belt/     # 水平传送带独立实验页
 ├── server.mjs              # 零依赖本地服务器
 ├── scripts/build.mjs       # 零依赖静态构建
 └── .github/workflows/      # GitHub Pages 自动部署

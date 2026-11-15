@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="水平传送带模型：判断物块是否与传送带共速、传送带是否足够长，并计算离开速度、运动时间、划痕与摩擦生热。"
+    />
+    <meta name="theme-color" content="#f2f0e8" />
+    <link rel="canonical" href="https://19991100.xyz/labs/conveyor-belt/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="/assets/conveyor.css" />
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("physics-theme");
+        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme === "dark" || savedTheme === "light"
+            ? savedTheme
+            : systemDark
+              ? "dark"
+              : "light";
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+    <title>水平传送带模型 · 19991100</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="/" aria-label="返回 19991100 Physics Lab 首页">
+        <span class="brand-mark" aria-hidden="true">Φ</span>
+        <span class="brand-copy">
+          <span class="brand-name">19991100</span>
+          <span class="brand-sub">PHYSICS LAB</span>
+        </span>
+      </a>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="主导航">
+        <a href="/#labs">模型库</a>
+        <a href="#simulation">参数实验</a>
+        <a href="#principles">考点拆解</a>
+      </nav>
+
+      <div class="header-actions">
+        <button
+          class="icon-button theme-toggle"
+          type="button"
+          aria-label="切换深色模式"
+          aria-pressed="false"
+          data-theme-toggle
+        >
+          <span class="theme-icon theme-icon-sun" aria-hidden="true">☼</span>
+          <span class="theme-icon theme-icon-moon" aria-hidden="true">◐</span>
+        </button>
+        <button
+          class="icon-button menu-toggle"
+          type="button"
+          aria-label="打开导航"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+          data-menu-toggle
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="conveyor-hero section-shell" aria-labelledby="conveyor-title">
+        <p class="eyebrow reveal">MODEL 01 / MECHANICS</p>
+        <h1 class="reveal" id="conveyor-title">水平传送带</h1>
+        <p class="section-note conveyor-intro reveal">
+          物块轻放在水平传送带上，摩擦力先改变物块速度；当物块与带速相等时，水平方向上不再相对滑动。
+        </p>
+      </section>
+
+      <section class="conveyor-workspace section-shell reveal" id="simulation">
+        <div class="conveyor-controls">
+          <div class="preset-block">
+            <span class="control-title">典型场景</span>
+            <div class="preset-grid">
+              <button type="button" data-preset="rest">静止轻放</button>
+              <button type="button" data-preset="short">带不够长</button>
+              <button type="button" data-preset="catch-up">同向追赶</button>
+              <button type="button" data-preset="slow-down">同向减速</button>
+              <button type="button" data-preset="opposite">逆向冲上</button>
+            </div>
+          </div>
+
+          <div class="parameter-grid">
+            <div class="control-group">
+              <div class="control-label">
+                <label for="band-speed">传送带速度</label>
+                <output id="band-speed-output" for="band-speed">4.0 m/s</output>
+              </div>
+              <input class="range-control" id="band-speed" type="range" min="0" max="10" step="0.5" value="4" />
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <label for="object-speed">物块初速度</label>
+                <output id="object-speed-output" for="object-speed">0.0 m/s</output>
+              </div>
+              <input class="range-control" id="object-speed" type="range" min="-8" max="10" step="0.5" value="0" />
+              <p class="control-hint">负值表示与带速方向相反。</p>
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <label for="belt-length">传送带长度</label>
+                <output id="belt-length-output" for="belt-length">8.0 m</output>
+              </div>
+              <input class="range-control" id="belt-length" type="range" min="1" max="30" step="0.5" value="8" />
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <label for="friction-factor">动摩擦因数 μ</label>
+                <output id="friction-factor-output" for="friction-factor">0.20</output>
+              </div>
+              <input class="range-control" id="friction-factor" type="range" min="0.05" max="0.8" step="0.05" value="0.2" />
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <label for="object-mass">物块质量</label>
+                <output id="object-mass-output" for="object-mass">2.0 kg</output>
+              </div>
+              <input class="range-control" id="object-mass" type="range" min="0.5" max="5" step="0.5" value="2" />
+            </div>
+          </div>
+
+          <div class="sim-buttons">
+            <button class="button button-primary" type="button" data-run>运行</button>
+            <button class="button button-quiet" type="button" data-reset>重置</button>
+          </div>
+        </div>
+
+        <div class="conveyor-visual">
+          <div class="sim-view-head">
+            <span>位置 / 时间与 v—t 图</span>
+            <span class="sim-state" data-sim-state aria-live="polite">等待运行</span>
+          </div>
+          <div class="conveyor-canvas-wrap">
+            <canvas
+              id="conveyor-canvas"
+              role="img"
+              aria-label="传送带与物块运动示意图，以及物块和传送带速度随时间变化曲线"
+            ></canvas>
+          </div>
+
+          <div class="conveyor-metrics" aria-live="polite">
+            <div>
+              <span>运动结果</span>
+              <strong data-result-status>—</strong>
+            </div>
+            <div>
+              <span>带是否足够长</span>
+              <strong data-result-long>—</strong>
+            </div>
+            <div>
+              <span>共速 / 离带时间</span>
+              <strong data-result-time>—</strong>
+            </div>
+            <div>
+              <span>离开速度</span>
+              <strong data-result-leave-v>—</strong>
+            </div>
+            <div>
+              <span>达到共速所需带长</span>
+              <strong data-result-need-s>—</strong>
+            </div>
+            <div>
+              <span>相对位移 / 划痕</span>
+              <strong data-result-trace>—</strong>
+            </div>
+            <div>
+              <span>摩擦生热 Q</span>
+              <strong data-result-heat>—</strong>
+            </div>
+            <div>
+              <span>加速度 a</span>
+              <strong data-result-accel>—</strong>
+            </div>
+          </div>
+
+          <div class="conveyor-conclusion">
+            <span aria-hidden="true">↳</span>
+            <p data-conclusion>改变参数后，运动过程会立即重新计算。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="principles-section section-shell" id="principles" aria-labelledby="principles-title">
+        <p class="eyebrow reveal">EXAM POINTS</p>
+        <h2 class="reveal" id="principles-title">考点拆解</h2>
+        <div class="principle-grid">
+          <article class="principle-card reveal">
+            <span class="principle-index">01</span>
+            <h3>先判断相对运动</h3>
+            <p>比较物块速度与带速：物块慢则摩擦力向前，物块快则摩擦力向后；速度相等时水平方向无滑动摩擦。</p>
+          </article>
+          <article class="principle-card reveal">
+            <span class="principle-index">02</span>
+            <h3>先算“够不够长”</h3>
+            <p>同向时，达到共速所需的位移为 |v² − v₀²| / (2μg)。与带长比较，决定物块能否在带上完成变速。</p>
+          </article>
+          <article class="principle-card reveal">
+            <span class="principle-index">03</span>
+            <h3>分阶段列方程</h3>
+            <p>先做匀变速运动，共速后与带一起匀速。分段求时间、位移与末速度，避免一次性套公式。</p>
+          </article>
+          <article class="principle-card reveal">
+            <span class="principle-index">04</span>
+            <h3>划痕看相对位移</h3>
+            <p>摩擦生热 Q = μmg·Δs，Δs 是物块相对传送带滑动的路程，不是物块相对地面的位移。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="/">
+        <span class="brand-mark" aria-hidden="true">Φ</span>
+        <span>19991100 Physics Lab</span>
+      </a>
+      <p>19991100.XYZ</p>
+      <div class="footer-links">
+        <a href="/#labs">模型库</a>
+        <a href="#simulation">参数实验</a>
+        <span>© <span data-year></span></span>
+      </div>
+    </footer>
+
+    <script type="module" src="/assets/conveyor.js"></script>
+  </body>
+</html>

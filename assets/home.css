@@ -1,0 +1,205 @@
+.model-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 980px;
+}
+
+.model-card {
+  grid-column: auto;
+}
+
+.model-card .card-link {
+  min-height: 430px;
+}
+
+.model-card .card-art {
+  height: 230px;
+}
+
+.conveyor-illustration {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 34px;
+  left: 34px;
+  display: grid;
+  gap: 20px;
+  transform: translateY(-38%);
+  pointer-events: none;
+}
+
+.belt-frame {
+  position: relative;
+  height: 150px;
+  border: 1px solid rgba(241, 240, 232, 0.16);
+  border-radius: 18px;
+  background:
+    linear-gradient(rgba(241, 240, 232, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 240, 232, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow: hidden;
+}
+
+.belt-belt {
+  position: absolute;
+  top: 50%;
+  right: 42px;
+  left: 42px;
+  height: 34px;
+  transform: translateY(-50%);
+}
+
+.belt-belt::before,
+.belt-belt::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: rgba(241, 240, 232, 0.62);
+  content: "";
+}
+
+.belt-belt::before {
+  top: 0;
+}
+
+.belt-belt::after {
+  bottom: 0;
+}
+
+.belt-segment {
+  position: absolute;
+  inset: 2px 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(220, 255, 98, 0.55) 0,
+    rgba(220, 255, 98, 0.55) 14px,
+    transparent 14px,
+    transparent 30px
+  );
+  opacity: 0.65;
+  animation: belt-move 1.1s linear infinite;
+}
+
+@keyframes belt-move {
+  to {
+    transform: translateX(30px);
+  }
+}
+
+.belt-roller {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(241, 240, 232, 0.58);
+  border-radius: 50%;
+  background: #13272c;
+  transform: translateY(-50%);
+}
+
+.belt-roller::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #dcff62;
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.belt-roller-left {
+  left: 0;
+}
+
+.belt-roller-right {
+  right: 0;
+}
+
+.belt-box {
+  position: absolute;
+  z-index: 3;
+  bottom: 27px;
+  left: 48%;
+  width: 62px;
+  height: 32px;
+  border: 1px solid rgba(241, 240, 232, 0.85);
+  border-radius: 7px;
+  background: #f05d3d;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.belt-arrow {
+  position: absolute;
+  top: 12px;
+  right: 32px;
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.belt-caption {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(241, 240, 232, 0.54);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.art-conveyor .art-grid,
+.art-conveyor .belt-outline {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.art-conveyor .art-axis {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.art-conveyor .belt-outline {
+  stroke: var(--ink-soft);
+}
+
+.belt-roller-art {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.belt-box-art {
+  fill: var(--orange);
+  stroke: var(--surface-raised);
+  stroke-width: 2;
+}
+
+.friction-arrow-art {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (max-width: 640px) {
+  .conveyor-illustration {
+    right: 22px;
+    left: 22px;
+  }
+
+  .belt-frame {
+    height: 120px;
+  }
+
+  .belt-box {
+    bottom: 21px;
+    width: 52px;
+    height: 27px;
+  }
+}
