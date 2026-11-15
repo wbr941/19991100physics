@@ -37,11 +37,13 @@
   min-width: 0;
   flex-direction: column;
   padding: clamp(22px, 2.6vw, 34px);
+  background: var(--surface-raised);
 }
 
 .control-title {
-  color: var(--ink-soft);
-  font-size: 11px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
   letter-spacing: 0.08em;
 }
 
@@ -53,13 +55,14 @@
 }
 
 .preset-grid button {
-  min-height: 42px;
+  min-height: 48px;
   padding: 0 12px;
-  color: var(--ink-soft);
+  color: var(--ink);
   border: 1px solid var(--line);
   border-radius: 11px;
   background: transparent;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   transition:
     color 180ms ease,
@@ -97,20 +100,24 @@
 }
 
 .control-label label {
-  font-size: 13px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .control-label output {
-  color: var(--ink-soft);
+  color: var(--ink);
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 .control-hint {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
   color: var(--ink-soft);
-  font-size: 11px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .range-control {
@@ -150,7 +157,7 @@
   gap: 20px;
   color: var(--ink-soft);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.12em;
 }
 
@@ -192,14 +199,14 @@
 
 .conveyor-metrics span {
   color: var(--ink-soft);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .conveyor-metrics strong {
   overflow: hidden;
   color: var(--ink);
   font-family: var(--mono);
-  font-size: clamp(13px, 1.4vw, 18px);
+  font-size: clamp(14px, 1.5vw, 19px);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   text-overflow: ellipsis;
@@ -221,55 +228,6 @@
 
 .conveyor-conclusion p {
   margin: 0;
-}
-
-.principles-section {
-  padding: clamp(80px, 10vw, 140px) 0;
-}
-
-.principles-section h2 {
-  margin: 0;
-  font-family: var(--display);
-  font-size: clamp(52px, 7vw, 96px);
-  font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.06em;
-}
-
-.principle-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 52px;
-}
-
-.principle-card {
-  min-width: 0;
-  padding: 24px 22px 28px;
-  border-top: 1px solid var(--line-strong);
-  background: var(--surface);
-}
-
-.principle-index {
-  color: var(--orange);
-  font-family: var(--mono);
-  font-size: 10px;
-}
-
-.principle-card h3 {
-  margin: 18px 0 12px;
-  font-family: var(--display);
-  font-size: 26px;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.03em;
-}
-
-.principle-card p {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 13px;
-  line-height: 1.8;
 }
 
 @media (max-width: 1100px) {
@@ -298,9 +256,6 @@
     border-left: 1px solid var(--line);
   }
 
-  .principle-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 860px) {
@@ -339,7 +294,4 @@
     padding: 15px 10px;
   }
 
-  .principle-grid {
-    grid-template-columns: 1fr;
-  }
 }

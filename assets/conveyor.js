@@ -540,125 +540,182 @@ class ConveyorBeltLab {
     const ink = getCssColor("--ink", "#142328");
     const soft = getCssColor("--ink-soft", "#536268");
     const line = getCssColor("--line", "rgba(20, 35, 40, 0.16)");
-    const accent = getCssColor("--accent", "#dcff62");
-    const orange = getCssColor("--orange", "#f05d3d");
-    const cyan = getCssColor("--cyan", "#76d9df");
 
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.textBaseline = "middle";
-    ctx.font = "10px SFMono-Regular, Consolas, monospace";
+    ctx.font = "12px SFMono-Regular, Consolas, monospace";
 
-    const beltLeft = 52;
-    const beltRight = this.width - 34;
-    const beltCenterY = this.height * 0.27;
-    const beltHalf = this.height * 0.065;
-    const beltTop = beltCenterY - beltHalf;
-    const beltBottom = beltCenterY + beltHalf;
+    const beltLeft = 58;
+    const beltRight = this.width - 42;
+    const beltCenterY = this.height * 0.255;
+    const rollerRadius = Math.min(this.height * 0.075, 32);
+    const beltTop = beltCenterY - rollerRadius;
+    const beltBottom = beltCenterY + rollerRadius;
     const beltScale = (beltRight - beltLeft) / this.config.length;
+    const baseY = beltBottom + 50;
 
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, this.width, this.height);
 
+    // Side elevation: supporting legs and frame.
+    ctx.strokeStyle = line;
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(beltLeft + 8, beltCenterY);
+    ctx.lineTo(beltLeft + 8, baseY);
+    ctx.moveTo(beltRight - 8, beltCenterY);
+    ctx.lineTo(beltRight - 8, baseY);
+    ctx.stroke();
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(beltLeft - 8, baseY);
+    ctx.lineTo(beltRight + 8, baseY);
+    ctx.stroke();
+
+    // The belt loop, drawn as a side-facing capsule.
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(
+      beltLeft - rollerRadius,
+      beltTop,
+      beltRight - beltLeft + rollerRadius * 2,
+      rollerRadius * 2,
+      rollerRadius,
+    );
+    ctx.stroke();
+
     ctx.strokeStyle = line;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(beltLeft, beltTop);
-    ctx.lineTo(beltRight, beltTop);
-    ctx.moveTo(beltLeft, beltBottom);
-    ctx.lineTo(beltRight, beltBottom);
+    ctx.roundRect(
+      beltLeft - rollerRadius + 8,
+      beltTop + 8,
+      beltRight - beltLeft + rollerRadius * 2 - 16,
+      rollerRadius * 2 - 16,
+      rollerRadius - 8,
+    );
     ctx.stroke();
 
-    ctx.fillStyle = `rgba(118, 217, 223, 0.1)`;
-    ctx.fillRect(beltLeft, beltTop, beltRight - beltLeft, beltBottom - beltTop);
-
-    const dashOffset = (point.t * this.config.band * beltScale) % 22;
+    const dashOffset =
+      (point.t * this.config.band * beltScale) % Math.max(rollerRadius * 1.6, 18);
     ctx.save();
     ctx.beginPath();
-    ctx.rect(beltLeft, beltTop, beltRight - beltLeft, beltBottom - beltTop);
+    ctx.rect(beltLeft, beltTop, beltRight - beltLeft, 4);
     ctx.clip();
-    ctx.strokeStyle = cyan;
+    ctx.strokeStyle = soft;
     ctx.lineWidth = 2;
-    for (let x = beltLeft - 22 + dashOffset; x < beltRight; x += 22) {
+    for (
+      let x = beltLeft - rollerRadius + dashOffset;
+      x < beltRight + rollerRadius;
+      x += Math.max(rollerRadius * 1.6, 18)
+    ) {
       ctx.beginPath();
-      ctx.moveTo(x, beltCenterY);
-      ctx.lineTo(x + 10, beltCenterY);
+      ctx.moveTo(x, beltTop + 2);
+      ctx.lineTo(x + 8, beltTop + 2);
       ctx.stroke();
     }
     ctx.restore();
 
     [beltLeft, beltRight].forEach((rollerX, rollerIndex) => {
       ctx.beginPath();
-      ctx.arc(rollerX, beltCenterY, 17, 0, Math.PI * 2);
-      ctx.fillStyle = getCssColor("--surface-raised", "#fffdf8");
+      ctx.arc(rollerX, beltCenterY, rollerRadius, 0, Math.PI * 2);
+      ctx.fillStyle = getCssColor("--surface", "#faf8f1");
       ctx.fill();
       ctx.strokeStyle = ink;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 3;
       ctx.stroke();
+
+      const wheelRotation = point.t * this.config.band / Math.max(rollerRadius, 1);
+      ctx.save();
+      ctx.translate(rollerX, beltCenterY);
+      ctx.rotate(wheelRotation);
+      ctx.strokeStyle = soft;
+      ctx.lineWidth = 2;
+      for (let spoke = 0; spoke < 6; spoke += 1) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(
+          Math.cos((spoke * Math.PI) / 3) * (rollerRadius - 7),
+          Math.sin((spoke * Math.PI) / 3) * (rollerRadius - 7),
+        );
+        ctx.stroke();
+      }
+      ctx.restore();
+
       ctx.beginPath();
-      ctx.arc(rollerX, beltCenterY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = orange;
+      ctx.arc(rollerX, beltCenterY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = ink;
       ctx.fill();
 
       if (rollerIndex === 1) {
         ctx.fillStyle = soft;
         ctx.textAlign = "center";
-        ctx.fillText("v带", rollerX, beltBottom + 22);
+        ctx.fillText("v带", rollerX, beltBottom + 20);
       }
     });
 
-    const objectX = beltLeft + Math.max(0, Math.min(this.config.length, point.x)) * beltScale;
-    const boxWidth = Math.min(34, beltScale * 1.1);
-    const boxHeight = beltHalf * 1.1;
-    ctx.fillStyle = orange;
+    const objectX =
+      beltLeft + Math.max(0, Math.min(this.config.length, point.x)) * beltScale;
+    const boxWidth = Math.max(30, Math.min(48, beltScale * 1.2));
+    const boxHeight = Math.max(28, rollerRadius * 1.05);
+    const objectY = beltTop - boxHeight - 3;
+
+    ctx.fillStyle = getCssColor("--surface-raised", "#fffdf8");
     ctx.beginPath();
     ctx.roundRect(
       objectX - boxWidth / 2,
-      beltCenterY - boxHeight / 2,
+      objectY,
       boxWidth,
       boxHeight,
-      4,
+      6,
     );
     ctx.fill();
     ctx.strokeStyle = ink;
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    const objectLabelY = beltTop - 26;
+    const objectLabelY = objectY - 22;
     ctx.fillStyle = ink;
     ctx.textAlign = "center";
     ctx.fillText(`v物 ${point.v.toFixed(1)} m/s`, objectX, objectLabelY);
 
-    const commonReached = this.result?.reachedCommon && point.t >= this.result.commonTime;
+    const commonReached =
+      this.result?.reachedCommon && point.t >= this.result.commonTime;
     if (!commonReached && Math.abs(point.v - this.config.band) > 0.03) {
       const frictionDirection = point.v < this.config.band ? 1 : -1;
-      const arrowY = beltTop - 12;
-      const arrowStart = objectX;
-      const arrowEnd = objectX + frictionDirection * 32;
+      const arrowY = objectY + boxHeight / 2;
+      const arrowStart = objectX + frictionDirection * (boxWidth / 2 + 3);
+      const arrowEnd = arrowStart + frictionDirection * 30;
       ctx.beginPath();
       ctx.moveTo(arrowStart, arrowY);
       ctx.lineTo(arrowEnd, arrowY);
-      ctx.lineTo(
-        arrowEnd - frictionDirection * 6,
-        arrowY - 4,
-      );
+      ctx.lineTo(arrowEnd - frictionDirection * 7, arrowY - 5);
       ctx.moveTo(arrowEnd, arrowY);
-      ctx.lineTo(arrowEnd - frictionDirection * 6, arrowY + 4);
-      ctx.strokeStyle = accent;
-      ctx.lineWidth = 2;
+      ctx.lineTo(arrowEnd - frictionDirection * 7, arrowY + 5);
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
-      ctx.fillStyle = soft;
-      ctx.fillText("f", arrowEnd + frictionDirection * 8, arrowY);
+      ctx.fillStyle = ink;
+      ctx.textAlign = "left";
+      ctx.fillText("f", arrowEnd + frictionDirection * 9, arrowY);
     }
 
     ctx.fillStyle = soft;
+    ctx.textAlign = "left";
+    ctx.fillText("侧视图", beltLeft - 4, 22);
     ctx.textAlign = "center";
-    ctx.fillText(`L = ${this.config.length.toFixed(1)} m`, beltLeft + 26, beltBottom + 22);
-    ctx.fillText(`x = ${Math.max(0, Math.min(this.config.length, point.x)).toFixed(1)} m`, objectX, beltBottom + 22);
+    ctx.fillText(`L = ${this.config.length.toFixed(1)} m`, beltLeft, baseY + 20);
+    ctx.fillText(
+      `x = ${Math.max(0, Math.min(this.config.length, point.x)).toFixed(1)} m`,
+      objectX,
+      baseY + 20,
+    );
 
     const graphLeft = 52;
     const graphRight = this.width - 24;
-    const graphTop = this.height * 0.46;
-    const graphBottom = this.height * 0.84;
+    const graphTop = this.height * 0.56;
+    const graphBottom = this.height * 0.9;
     const graphWidth = graphRight - graphLeft;
     const graphHeight = graphBottom - graphTop;
     const maxTime = Math.max(
@@ -697,14 +754,13 @@ class ConveyorBeltLab {
     ctx.stroke();
 
     const bandY = zeroY - this.config.band * speedScale;
-    ctx.strokeStyle = cyan;
-    ctx.setLineDash([5, 5]);
+    ctx.strokeStyle = soft;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(graphLeft, bandY);
     ctx.lineTo(graphRight, bandY);
     ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = cyan;
+    ctx.fillStyle = soft;
     ctx.textAlign = "left";
     ctx.fillText(`v带 ${this.config.band.toFixed(1)}`, graphLeft + 6, bandY - 9);
 
@@ -716,8 +772,8 @@ class ConveyorBeltLab {
       if (pathIndex === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
     }
-    ctx.strokeStyle = orange;
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = ink;
+    ctx.lineWidth = 2;
     ctx.lineJoin = "round";
     ctx.stroke();
 
@@ -726,7 +782,7 @@ class ConveyorBeltLab {
       const commonY = zeroY - this.config.band * speedScale;
       ctx.beginPath();
       ctx.arc(commonX, commonY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = accent;
+      ctx.fillStyle = ink;
       ctx.fill();
       ctx.fillStyle = soft;
       ctx.textAlign = commonX > graphRight - 90 ? "right" : "left";
