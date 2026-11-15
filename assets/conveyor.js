@@ -119,6 +119,7 @@ class ConveyorBeltLab {
     this.massOutput = document.querySelector("#object-mass-output");
     this.runButton = document.querySelector("[data-run]");
     this.resetButton = document.querySelector("[data-reset]");
+    this.speedButtons = [...document.querySelectorAll("[data-animation-speed]")];
     this.stateOutput = document.querySelector("[data-sim-state]");
     this.presetButtons = [...document.querySelectorAll("[data-preset]")];
 
@@ -128,9 +129,10 @@ class ConveyorBeltLab {
     this.path = [];
     this.result = null;
     this.animationFrame = null;
-    this.animationStart = 0;
+    this.lastFrame = 0;
     this.progress = 0;
     this.isPlaying = false;
+    this.speedMode = "slow";
     this.config = this.readConfig();
 
     this.draw = this.draw.bind(this);
@@ -162,7 +164,22 @@ class ConveyorBeltLab {
 
     this.runButton?.addEventListener("click", () => this.run());
     this.resetButton?.addEventListener("click", () => this.reset());
+    this.speedButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        this.setAnimationSpeed(button.dataset.animationSpeed);
+      });
+    });
     window.addEventListener("physics:themechange", () => this.draw());
+  }
+
+  setAnimationSpeed(mode) {
+    if (mode !== "slow" && mode !== "fast") return;
+    this.speedMode = mode;
+    this.speedButtons.forEach((button) => {
+      const isActive = button.dataset.animationSpeed === mode;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
   }
 
   readConfig() {
@@ -442,7 +459,7 @@ class ConveyorBeltLab {
     this.cancelAnimation();
     this.isPlaying = true;
     this.progress = 0;
-    this.animationStart = performance.now();
+    this.lastFrame = performance.now();
     this.setState("运行中");
 
     if (prefersReducedMotion.matches) {
@@ -458,9 +475,10 @@ class ConveyorBeltLab {
 
   animate(now) {
     const duration = Math.max(this.path[this.path.length - 1].t, 0.01);
-    const displayDuration = Math.min(Math.max(duration * 0.75, 1.4), 8.5);
-    const elapsed = (now - this.animationStart) / 1000;
-    this.progress = Math.min(elapsed / displayDuration, 1);
+    const elapsed = Math.max((now - this.lastFrame) / 1000, 0);
+    const speedFactor = this.speedMode === "fast" ? 2.5 : 1;
+    this.lastFrame = now;
+    this.progress = Math.min(this.progress + (elapsed * speedFactor) / duration, 1);
     this.draw();
 
     if (this.progress >= 1) {
