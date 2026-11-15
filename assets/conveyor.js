@@ -476,7 +476,7 @@ class ConveyorBeltLab {
   animate(now) {
     const duration = Math.max(this.path[this.path.length - 1].t, 0.01);
     const elapsed = Math.max((now - this.lastFrame) / 1000, 0);
-    const speedFactor = this.speedMode === "fast" ? 2.5 : 1;
+    const speedFactor = this.speedMode === "fast" ? 1.4 : 0.5;
     this.lastFrame = now;
     this.progress = Math.min(this.progress + (elapsed * speedFactor) / duration, 1);
     this.draw();
