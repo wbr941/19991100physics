@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#F2F0E8" stroke-opacity=".055"/>
+    </pattern>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+      <stop stop-color="#DCFF62" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#DCFF62" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0B191E"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="875" cy="316" r="260" fill="url(#glow)"/>
+  <ellipse cx="875" cy="316" rx="205" ry="118" fill="none" stroke="#F2F0E8" stroke-opacity=".16" transform="rotate(-17 875 316)"/>
+  <ellipse cx="875" cy="316" rx="300" ry="184" fill="none" stroke="#F2F0E8" stroke-opacity=".1" transform="rotate(9 875 316)"/>
+  <circle cx="875" cy="316" r="31" fill="#DCFF62"/>
+  <circle cx="1037" cy="244" r="10" fill="#F05D3D"/>
+  <circle cx="636" cy="376" r="8" fill="#76D9DF"/>
+  <g fill="#F2F0E8">
+    <text x="80" y="106" font-family="Consolas, monospace" font-size="20" letter-spacing="5">19991100 PHYSICS LAB</text>
+    <text x="76" y="243" font-family="Georgia, serif" font-size="95" letter-spacing="-4">MAKE PHYSICS</text>
+    <text x="76" y="345" font-family="Georgia, serif" font-size="95" font-style="italic" letter-spacing="-4" fill="#F05D3D">VISIBLE.</text>
+    <text x="80" y="430" font-family="Arial, sans-serif" font-size="24" opacity=".56">Interactive experiments for physical intuition.</text>
+    <text x="80" y="566" font-family="Consolas, monospace" font-size="18" letter-spacing="4" fill="#DCFF62">19991100.XYZ</text>
+  </g>
+</svg>

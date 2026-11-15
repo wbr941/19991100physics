@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="19991100 物理模型可视化：调整参数，观察物理结果。"
+    />
+    <meta name="theme-color" content="#f2f0e8" />
+    <link rel="canonical" href="https://19991100.xyz/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("physics-theme");
+        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme === "dark" || savedTheme === "light"
+            ? savedTheme
+            : systemDark
+              ? "dark"
+              : "light";
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+    <title>19991100 · 物理模型可视化</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="19991100 · 物理模型可视化" />
+    <meta
+      property="og:description"
+      content="选择物理模型，调整参数并观察结果。"
+    />
+    <meta property="og:url" content="https://19991100.xyz/" />
+    <meta property="og:image" content="https://19991100.xyz/assets/og-cover.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "19991100 Physics Lab",
+        "url": "https://19991100.xyz/",
+        "description": "把抽象公式变成可操作实验的物理可视化门户。",
+        "inLanguage": "zh-CN"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="19991100 Physics Lab 首页">
+        <span class="brand-mark" aria-hidden="true">Φ</span>
+        <span class="brand-copy">
+          <span class="brand-name">19991100</span>
+          <span class="brand-sub">PHYSICS LAB</span>
+        </span>
+      </a>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="主导航">
+        <a href="#labs">模型库</a>
+        <a href="#lab-001">抛体运动</a>
+      </nav>
+
+      <div class="header-actions">
+        <button
+          class="icon-button theme-toggle"
+          type="button"
+          aria-label="切换深色模式"
+          aria-pressed="false"
+          data-theme-toggle
+        >
+          <span class="theme-icon theme-icon-sun" aria-hidden="true">☼</span>
+          <span class="theme-icon theme-icon-moon" aria-hidden="true">◐</span>
+        </button>
+        <button
+          class="icon-button menu-toggle"
+          type="button"
+          aria-label="打开导航"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+          data-menu-toggle
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow reveal">19991100 / PHYSICS LAB</p>
+          <h1 class="reveal" id="hero-title">
+            物理模型
+            <span>可视化</span>
+          </h1>
+          <p class="hero-intro reveal">
+            调整参数，观察结果。先从一个可交互的抛体运动模型开始。
+          </p>
+          <div class="hero-actions reveal">
+            <a class="button button-primary" href="#labs">
+              浏览模型
+              <span aria-hidden="true">↘</span>
+            </a>
+          </div>
+          <div class="hero-notes reveal" aria-label="站点说明">
+            <span><i aria-hidden="true"></i> 6 个模型</span>
+            <span>参数可调</span>
+            <span>浏览器运行</span>
+          </div>
+        </div>
+
+        <div class="hero-stage reveal" aria-label="万有引力轨道模拟">
+          <div class="stage-head">
+            <div>
+              <span class="stage-kicker">FIELD 01</span>
+              <p>万有引力轨道</p>
+            </div>
+            <div class="stage-live">
+              <span aria-hidden="true"></span>
+              LIVE
+            </div>
+          </div>
+
+          <canvas
+            id="orbit-canvas"
+            role="img"
+            aria-label="两颗行星围绕中心恒星运动的动态轨道示意图"
+          ></canvas>
+
+          <div class="stage-label stage-label-a">
+            <span>主星</span>
+            <strong>M</strong>
+          </div>
+          <div class="stage-label stage-label-b">
+            <span>天体 01</span>
+            <strong>m₁</strong>
+          </div>
+          <div class="stage-label stage-label-c">
+            <span>天体 02</span>
+            <strong>m₂</strong>
+          </div>
+
+          <div class="stage-foot">
+            <span>万有引力</span>
+            <span class="stage-formula">F = G m₁m₂ / r²</span>
+          </div>
+        </div>
+
+        <div class="hero-index" aria-hidden="true">
+          <span>MODEL LIBRARY</span>
+          <span>01—06</span>
+        </div>
+      </section>
+
+      <section class="labs-section section-shell" id="labs" aria-labelledby="labs-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow reveal">MODEL LIBRARY</p>
+            <h2 class="reveal" id="labs-title">物理模型</h2>
+          </div>
+          <p class="section-note reveal">选择一个模型查看。</p>
+        </div>
+
+        <div class="filter-row reveal" aria-label="筛选实验主题">
+          <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">
+            全部
+          </button>
+          <button class="filter-button" type="button" data-filter="classic" aria-pressed="false">
+            经典物理
+          </button>
+          <button class="filter-button" type="button" data-filter="modern" aria-pressed="false">
+            近代物理
+          </button>
+          <button class="filter-button" type="button" data-filter="universe" aria-pressed="false">
+            宇宙
+          </button>
+        </div>
+
+        <div class="lab-grid" data-lab-grid>
+          <article class="lab-card lab-card-featured reveal" data-category="classic">
+            <div class="card-head">
+              <span class="card-index">01 / MECHANICS</span>
+              <span class="status-tag status-ready">可运行</span>
+            </div>
+            <a class="card-link" href="#lab-001">
+              <div class="card-art art-projectile" aria-hidden="true">
+                <span class="projectile-dot"></span>
+                <svg viewBox="0 0 420 170" preserveAspectRatio="none">
+                  <path class="art-grid" d="M0 143H420M0 103H420M0 63H420M0 23H420" />
+                  <path class="art-path" d="M28 143C104 24 241 24 392 143" />
+                  <line class="art-axis" x1="28" y1="143" x2="392" y2="143" />
+                  <line x1="28" y1="143" x2="28" y2="22" class="art-axis" />
+                </svg>
+              </div>
+              <div class="card-copy">
+                <h3>抛体运动</h3>
+                <p>调节初速度、发射角和重力加速度，计算射程、最大高度与飞行时间。</p>
+              </div>
+              <span class="card-action" aria-hidden="true">进入实验 ↗</span>
+            </a>
+          </article>
+
+          <article class="lab-card reveal" data-category="classic">
+            <div class="card-head">
+              <span class="card-index">02 / WAVES</span>
+              <span class="status-tag">待开发</span>
+            </div>
+            <div class="card-link card-link-static">
+              <div class="card-art art-wave" aria-hidden="true">
+                <svg viewBox="0 0 420 170" preserveAspectRatio="none">
+                  <path class="art-grid" d="M0 40H420M0 85H420M0 130H420" />
+                  <path class="wave-line wave-line-a" d="M0 85C35 15 70 15 105 85S175 155 210 85S280 15 315 85S385 155 420 85" />
+                  <path class="wave-line wave-line-b" d="M0 85C35 25 70 25 105 85S175 145 210 85S280 25 315 85S385 145 420 85" />
+                </svg>
+              </div>
+              <div class="card-copy">
+                <h3>机械波叠加</h3>
+                <p>两列简谐波叠加后的振幅、相位与波形。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="lab-card reveal" data-category="classic">
+            <div class="card-head">
+              <span class="card-index">03 / OPTICS</span>
+              <span class="status-tag">待开发</span>
+            </div>
+            <div class="card-link card-link-static">
+              <div class="card-art art-prism" aria-hidden="true">
+                <svg viewBox="0 0 420 170" preserveAspectRatio="none">
+                  <path class="light-ray" d="M0 78H150" />
+                  <path class="prism-shape" d="M150 28L244 142H56Z" />
+                  <path class="spectrum spectrum-1" d="M203 74L420 32" />
+                  <path class="spectrum spectrum-2" d="M208 82L420 60" />
+                  <path class="spectrum spectrum-3" d="M211 91L420 91" />
+                  <path class="spectrum spectrum-4" d="M208 100L420 123" />
+                  <path class="spectrum spectrum-5" d="M203 109L420 151" />
+                </svg>
+              </div>
+              <div class="card-copy">
+                <h3>棱镜色散</h3>
+                <p>白光经过棱镜后的折射角与可见光谱分布。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="lab-card reveal" data-category="classic">
+            <div class="card-head">
+              <span class="card-index">04 / HEAT</span>
+              <span class="status-tag">待开发</span>
+            </div>
+            <div class="card-link card-link-static">
+              <div class="card-art art-heat" aria-hidden="true">
+                <svg viewBox="0 0 420 170" preserveAspectRatio="none">
+                  <rect class="heat-box" x="72" y="18" width="276" height="136" rx="20" />
+                  <circle class="heat-particle p1" cx="122" cy="65" r="9" />
+                  <circle class="heat-particle p2" cx="184" cy="112" r="13" />
+                  <circle class="heat-particle p3" cx="248" cy="60" r="7" />
+                  <circle class="heat-particle p4" cx="306" cy="112" r="11" />
+                  <path class="heat-arrow" d="M147 41L170 55M221 94L244 108M267 39L290 53M280 130L303 116" />
+                </svg>
+              </div>
+              <div class="card-copy">
+                <h3>分子动理论</h3>
+                <p>气体粒子速度、碰撞与温度的统计关系。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="lab-card reveal" data-category="modern">
+            <div class="card-head">
+              <span class="card-index">05 / QUANTUM</span>
+              <span class="status-tag">待开发</span>
+            </div>
+            <div class="card-link card-link-static">
+              <div class="card-art art-quantum" aria-hidden="true">
+                <svg viewBox="0 0 420 170" preserveAspectRatio="none">
+                  <path class="quantum-slit" d="M88 20V150" />
+                  <path class="quantum-slit" d="M92 62H104M92 108H104" />
+                  <path class="interference-line" d="M104 62Q250 20 420 44" />
+                  <path class="interference-line" d="M104 108Q250 150 420 126" />
+                  <path class="interference-dot" d="M132 57M168 46M204 40M240 40M276 44M312 51M348 61M384 74" />
+                  <path class="interference-dot" d="M132 113M168 124M204 130M240 130M276 126M312 119M348 109M384 96" />
+                </svg>
+              </div>
+              <div class="card-copy">
+                <h3>电子双缝干涉</h3>
+                <p>双缝间距、波长与屏幕干涉条纹的关系。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="lab-card reveal" data-category="universe modern">
+            <div class="card-head">
+              <span class="card-index">06 / SPACETIME</span>
+              <span class="status-tag">待开发</span>
+            </div>
+            <div class="card-link card-link-static">
+              <div class="card-art art-spacetime" aria-hidden="true">
+                <svg viewBox="0 0 420 170" preserveAspectRatio="none">
+                  <path class="spacetime-grid" d="M20 45H400M20 85H400M20 125H400M70 16V154M140 16V154M210 16V154M280 16V154M350 16V154" />
+                  <path class="spacetime-well" d="M20 85C105 85 125 16 210 16C295 16 315 85 400 85" />
+                  <circle class="spacetime-mass" cx="210" cy="16" r="13" />
+                </svg>
+              </div>
+              <div class="card-copy">
+                <h3>万有引力轨道</h3>
+                <p>中心天体质量、轨道半径与运行周期。</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="simulation-section" id="lab-001" aria-labelledby="sim-title">
+        <div class="simulation-heading section-shell">
+          <div class="experiment-label reveal">
+            <span>LAB 001</span>
+            <span>INTERACTIVE</span>
+          </div>
+          <div>
+            <p class="eyebrow reveal">PARAMETERS</p>
+            <h2 class="reveal" id="sim-title">抛体运动</h2>
+            <p class="section-note simulation-intro reveal">
+              设置初速度、发射角和重力环境，观察小球轨迹。
+            </p>
+          </div>
+        </div>
+
+        <div class="experiment-shell section-shell reveal">
+          <div class="sim-controls">
+            <div class="control-group">
+              <div class="control-label">
+                <label for="speed-range">初速度</label>
+                <output id="speed-output" for="speed-range">18.0 m/s</output>
+              </div>
+              <input
+                class="range-control"
+                id="speed-range"
+                type="range"
+                min="8"
+                max="28"
+                step="1"
+                value="18"
+              />
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <label for="angle-range">发射角</label>
+                <output id="angle-output" for="angle-range">45°</output>
+              </div>
+              <input
+                class="range-control"
+                id="angle-range"
+                type="range"
+                min="15"
+                max="75"
+                step="1"
+                value="45"
+              />
+            </div>
+
+            <fieldset class="gravity-control">
+              <legend>重力环境</legend>
+              <div class="segment-control">
+                <label>
+                  <input type="radio" name="gravity" value="9.81" checked />
+                  <span>地球</span>
+                </label>
+                <label>
+                  <input type="radio" name="gravity" value="1.62" />
+                  <span>月球</span>
+                </label>
+                <label>
+                  <input type="radio" name="gravity" value="3.71" />
+                  <span>火星</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="sim-buttons">
+              <button class="button button-primary" type="button" data-launch>
+                发射小球
+                <span aria-hidden="true">↗</span>
+              </button>
+              <button class="button button-quiet" type="button" data-reset>
+                重置
+              </button>
+            </div>
+
+            <div class="equation-note">
+              <span>轨迹方程</span>
+              <code>y = x tanθ − gx² / 2v₀²cos²θ</code>
+            </div>
+          </div>
+
+          <div class="sim-view">
+            <div class="sim-view-head">
+              <span>位移 / 时间</span>
+              <span class="sim-state" data-sim-state aria-live="polite">等待发射</span>
+            </div>
+            <div class="sim-canvas-wrap">
+              <canvas
+                id="projectile-canvas"
+                role="img"
+                aria-label="小球抛体运动轨迹图，显示水平距离与高度"
+              ></canvas>
+            </div>
+            <div class="sim-metrics" aria-live="polite">
+              <div>
+                <span>最大高度</span>
+                <strong data-max-height>8.3 m</strong>
+              </div>
+              <div>
+                <span>水平射程</span>
+                <strong data-range>33.0 m</strong>
+              </div>
+              <div>
+                <span>空中时间</span>
+                <strong data-flight-time>2.59 s</strong>
+              </div>
+            </div>
+            <p class="sim-caption">
+              <span aria-hidden="true">↳</span>
+              忽略空气阻力，参数变化后实时更新。
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">Φ</span>
+        <span>19991100 Physics Lab</span>
+      </a>
+      <p>19991100.XYZ</p>
+      <div class="footer-links">
+        <a href="#labs">模型库</a>
+        <a href="#lab-001">抛体运动</a>
+        <span>© <span data-year></span></span>
+      </div>
+    </footer>
+
+    <script type="module" src="/assets/main.js"></script>
+  </body>
+</html>

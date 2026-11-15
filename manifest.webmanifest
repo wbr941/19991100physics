@@ -1,0 +1,18 @@
+{
+  "name": "19991100 Physics Lab",
+  "short_name": "19991100",
+  "description": "把抽象公式变成可操作实验的物理可视化门户。",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f0e8",
+  "theme_color": "#142328",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
