@@ -539,7 +539,7 @@ class ConveyorBeltLab {
 
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.textBaseline = "middle";
-    ctx.font = `${this.width < 480 ? 13 : 14}px SFMono-Regular, Consolas, monospace`;
+    ctx.font = `600 ${this.width < 480 ? 13 : 14}px SFMono-Regular, Consolas, monospace`;
 
     const beltLeft = 58;
     const beltRight = this.width - 42;
@@ -703,14 +703,53 @@ class ConveyorBeltLab {
       this.result?.exitTime ?? 0,
       1,
     );
-    const maxSpeed = Math.max(
+    const rawMaxSpeed = Math.max(
       Math.abs(this.config.band),
       Math.abs(this.config.v0),
-      1,
+      0.5,
     );
+    const velocityStep =
+      rawMaxSpeed <= 2 ? 0.5 : rawMaxSpeed <= 5 ? 1 : 2;
+    const maxSpeed = Math.ceil(rawMaxSpeed / velocityStep) * velocityStep;
     const timeScale = graphWidth / maxTime;
-    const speedScale = (graphHeight * 0.42) / maxSpeed;
-    const zeroY = graphTop + graphHeight * 0.58;
+    const speedScale = (graphHeight * 0.4) / maxSpeed;
+    const zeroY = graphTop + graphHeight * 0.5;
+
+    ctx.font = `600 ${this.width < 480 ? 11 : 12}px SFMono-Regular, Consolas, monospace`;
+
+    for (
+      let velocity = -maxSpeed;
+      velocity <= maxSpeed + 1e-9;
+      velocity += velocityStep
+    ) {
+      const y = zeroY - velocity * speedScale;
+      ctx.strokeStyle = line;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(graphLeft, y);
+      ctx.lineTo(graphRight, y);
+      ctx.stroke();
+
+      const roundedVelocity = Math.abs(velocity) < 1e-9 ? 0 : velocity;
+      const tickLabel = Number.isInteger(roundedVelocity)
+        ? String(roundedVelocity)
+        : roundedVelocity.toFixed(1);
+      ctx.fillStyle = soft;
+      ctx.textAlign = "right";
+      ctx.fillText(tickLabel, graphLeft - 10, y);
+    }
+
+    ctx.strokeStyle = soft;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(graphLeft, graphTop);
+    ctx.lineTo(graphLeft, graphBottom);
+    ctx.stroke();
+
+    ctx.fillStyle = soft;
+    ctx.textAlign = "left";
+    ctx.fillText("v/(m·s⁻¹)", graphLeft, graphTop - 14);
+    ctx.font = `600 ${this.width < 480 ? 13 : 14}px SFMono-Regular, Consolas, monospace`;
 
     ctx.strokeStyle = line;
     ctx.lineWidth = 1;
