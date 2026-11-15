@@ -74,9 +74,6 @@
       <section class="conveyor-hero section-shell" aria-labelledby="conveyor-title">
         <p class="eyebrow reveal">MODEL 01 / MECHANICS</p>
         <h1 class="reveal" id="conveyor-title">水平传送带</h1>
-        <p class="section-note conveyor-intro reveal">
-          物块轻放在水平传送带上，摩擦力先改变物块速度；当物块与带速相等时，水平方向上不再相对滑动。
-        </p>
       </section>
 
       <section class="conveyor-workspace section-shell reveal" id="simulation">
@@ -99,6 +96,9 @@
                 <output id="band-speed-output" for="band-speed">4.0 m/s</output>
               </div>
               <input class="range-control" id="band-speed" type="range" min="0" max="10" step="0.5" value="4" />
+              <div class="range-scale" aria-hidden="true">
+                <span>0</span><span>2.5</span><span>5</span><span>7.5</span><span>10</span>
+              </div>
             </div>
 
             <div class="control-group">
@@ -107,7 +107,9 @@
                 <output id="object-speed-output" for="object-speed">0.0 m/s</output>
               </div>
               <input class="range-control" id="object-speed" type="range" min="-8" max="10" step="0.5" value="0" />
-              <p class="control-hint">负值表示与带速方向相反。</p>
+              <div class="range-scale" aria-hidden="true">
+                <span>-8</span><span>-3.5</span><span>1</span><span>5.5</span><span>10</span>
+              </div>
             </div>
 
             <div class="control-group">
@@ -116,6 +118,9 @@
                 <output id="belt-length-output" for="belt-length">8.0 m</output>
               </div>
               <input class="range-control" id="belt-length" type="range" min="1" max="30" step="0.5" value="8" />
+              <div class="range-scale" aria-hidden="true">
+                <span>1</span><span>8.25</span><span>15.5</span><span>22.75</span><span>30</span>
+              </div>
             </div>
 
             <div class="control-group">
@@ -124,6 +129,9 @@
                 <output id="friction-factor-output" for="friction-factor">0.20</output>
               </div>
               <input class="range-control" id="friction-factor" type="range" min="0.05" max="0.8" step="0.05" value="0.2" />
+              <div class="range-scale" aria-hidden="true">
+                <span>0.05</span><span>0.24</span><span>0.43</span><span>0.61</span><span>0.80</span>
+              </div>
             </div>
 
             <div class="control-group">
@@ -132,6 +140,9 @@
                 <output id="object-mass-output" for="object-mass">2.0 kg</output>
               </div>
               <input class="range-control" id="object-mass" type="range" min="0.5" max="5" step="0.5" value="2" />
+              <div class="range-scale" aria-hidden="true">
+                <span>0.5</span><span>1.6</span><span>2.8</span><span>3.9</span><span>5</span>
+              </div>
             </div>
           </div>
 
@@ -143,7 +154,6 @@
 
         <div class="conveyor-visual">
           <div class="sim-view-head">
-            <span>位置 / 时间与 v—t 图</span>
             <span class="sim-state" data-sim-state aria-live="polite">等待运行</span>
           </div>
           <div class="conveyor-canvas-wrap">
@@ -185,10 +195,6 @@
             </div>
           </div>
 
-          <div class="conveyor-conclusion">
-            <span aria-hidden="true">↳</span>
-            <p data-conclusion>改变参数后，运动过程会立即重新计算。</p>
-          </div>
         </div>
       </section>
 

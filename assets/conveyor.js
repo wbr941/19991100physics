@@ -426,28 +426,6 @@ class ConveyorBeltLab {
     this.setText("[data-result-trace]", `${result.traceLength.toFixed(2)} m`);
     this.setText("[data-result-accel]", `${result.acceleration.toFixed(2)} m/s²`);
 
-    const conclusion = document.querySelector("[data-conclusion]");
-    if (conclusion) {
-      conclusion.textContent = this.buildConclusion(result);
-    }
-  }
-
-  buildConclusion(result) {
-    if (result.reachedCommon) {
-      const prefix = result.longEnough ? "传送带足够长：" : "传送带长度不足，物块尚未共速即离开：";
-      const commonText =
-        result.commonTime !== null ? `共速时间 ${result.commonTime.toFixed(2)} s` : "";
-      const traceText = result.traceLength > 0 ? `，相对位移 ${result.traceLength.toFixed(2)} m` : "";
-      return `${prefix}${commonText}${traceText}。`;
-    }
-
-    if (result.exitSide === "left") {
-      return `物块相对带速向左运动，t=${result.exitTime.toFixed(2)} s 时从左端离开。`;
-    }
-    if (result.exitSide === "right") {
-      return `物块未达到共速，t=${result.exitTime.toFixed(2)} s 时从右端离开，末速度 ${result.exitSpeed.toFixed(1)} m/s。`;
-    }
-    return "改变参数后，运动过程会立即重新计算。";
   }
 
   setText(selector, text) {
@@ -543,7 +521,7 @@ class ConveyorBeltLab {
 
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.textBaseline = "middle";
-    ctx.font = "12px SFMono-Regular, Consolas, monospace";
+    ctx.font = `${this.width < 480 ? 13 : 14}px SFMono-Regular, Consolas, monospace`;
 
     const beltLeft = 58;
     const beltRight = this.width - 42;
