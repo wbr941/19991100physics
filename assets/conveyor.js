@@ -424,7 +424,6 @@ class ConveyorBeltLab {
     );
 
     this.setText("[data-result-trace]", `${result.traceLength.toFixed(2)} m`);
-    this.setText("[data-result-heat]", `${result.heat.toFixed(1)} J`);
     this.setText("[data-result-accel]", `${result.acceleration.toFixed(2)} m/s²`);
 
     const conclusion = document.querySelector("[data-conclusion]");
@@ -539,6 +538,7 @@ class ConveyorBeltLab {
     const bg = getCssColor("--surface", "#faf8f1");
     const ink = getCssColor("--ink", "#142328");
     const soft = getCssColor("--ink-soft", "#536268");
+    const objectLine = getCssColor("--orange", "#f05d3d");
     const line = getCssColor("--line", "rgba(20, 35, 40, 0.16)");
 
     ctx.clearRect(0, 0, this.width, this.height);
@@ -626,25 +626,8 @@ class ConveyorBeltLab {
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      const wheelRotation = point.t * this.config.band / Math.max(rollerRadius, 1);
-      ctx.save();
-      ctx.translate(rollerX, beltCenterY);
-      ctx.rotate(wheelRotation);
-      ctx.strokeStyle = soft;
-      ctx.lineWidth = 2;
-      for (let spoke = 0; spoke < 6; spoke += 1) {
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(
-          Math.cos((spoke * Math.PI) / 3) * (rollerRadius - 7),
-          Math.sin((spoke * Math.PI) / 3) * (rollerRadius - 7),
-        );
-        ctx.stroke();
-      }
-      ctx.restore();
-
       ctx.beginPath();
-      ctx.arc(rollerX, beltCenterY, 5, 0, Math.PI * 2);
+      ctx.arc(rollerX, beltCenterY, 3, 0, Math.PI * 2);
       ctx.fillStyle = ink;
       ctx.fill();
 
@@ -772,7 +755,7 @@ class ConveyorBeltLab {
       if (pathIndex === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
     }
-    ctx.strokeStyle = ink;
+    ctx.strokeStyle = objectLine;
     ctx.lineWidth = 2;
     ctx.lineJoin = "round";
     ctx.stroke();
@@ -782,7 +765,7 @@ class ConveyorBeltLab {
       const commonY = zeroY - this.config.band * speedScale;
       ctx.beginPath();
       ctx.arc(commonX, commonY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = ink;
+      ctx.fillStyle = objectLine;
       ctx.fill();
       ctx.fillStyle = soft;
       ctx.textAlign = commonX > graphRight - 90 ? "right" : "left";
